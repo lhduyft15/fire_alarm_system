@@ -62,7 +62,7 @@
 
 #define LCD_ROW_LEN  	32   /* up to 32 characters per each row */
 
-void LCD_init(char* header);
+void LCD_init(char* str);
 void LCD_write(char *str, uint8 row);
 
 #endif /* HAL_SPIDISPLAY_ENABLE */
