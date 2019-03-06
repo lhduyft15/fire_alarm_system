@@ -24,6 +24,7 @@
 
 static char LCD_data[LCD_ROW_MAX][LCD_ROW_LEN];   /* 2D array for storing the LCD content */
 
+static char header[HEADER_LINE * LCD_ROW_LEN];
 
 //This is needed by the LCD driver
 int rtcIntCallbackRegister(void (*pFunction)(void*),
@@ -37,25 +38,23 @@ int rtcIntCallbackRegister(void (*pFunction)(void*),
  * LCD initialization, called once at startup.
  * This functions will be initialize display and set header.
 */
-void LCD_init(char* header)
+void LCD_init(char* str)
 {
   int i = 0;
   int count_endline = 0;
 
   memset(&LCD_data, 0, sizeof(LCD_data));
 
-  char new_header[HEADER_LINE * LCD_ROW_LEN];
-
   while (count_endline < HEADER_LINE) {
-	  new_header[i] = *(header + i);
-	  if (*(header + i) == '\n') count_endline++;
-	  else if (*(header + i) == '\0') {
-		  new_header[i] = '\n';
+	  header[i] = *(str + i);
+	  if (*(str + i) == '\n') count_endline++;
+	  else if (*(str + i) == '\0') {
+		  header[i] = '\n';
 		  count_endline++;
 	  }
 	  i++;
   }
-  graphInit(new_header);
+  graphInit(header);
 }
 
 /*
@@ -68,6 +67,7 @@ void LCD_write(char *str, uint8 row)
   int i = 0;
   char *pRow;
   char LCD_message[LCD_ROW_MAX * LCD_ROW_LEN];
+
   char new_str[ROW_LINE * LCD_ROW_LEN];
 
   while (*(str + i) != '\n' && *(str + i) != '\0') {
